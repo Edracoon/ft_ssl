@@ -1,12 +1,12 @@
-NNAME=Gomoku
+NAME=ft_ssl
 
-CPPFLAGS = -Wall -Wextra -Werror -std=c++17 -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
-SRCS = ${wildcard srcs/*.cpp}
-OBJS = $(SRCS:.cpp=.o)
+SRCS = ${wildcard *.c} ${wildcard */*.c}
+OBJS = $(SRCS:.c=.o)
 
 ${NAME}: ${OBJS}
-	g++ ${CPPFLAGS} ${OBJS} -o ${NAME}
+	gcc ${CFLAGS} ${OBJS} -o ${NAME}
 
 all: ${NAME}
 
