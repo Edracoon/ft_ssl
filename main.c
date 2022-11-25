@@ -1,15 +1,16 @@
 #include "ft_ssl.h"
 
-void	choseAlgorithm(string str, string algorithm)
+void	executeAlgorithm(SSL *ssl)
 {
-	if (strEqual(algorithm, "md5"))
-		md5(str);
-	else if (strEqual(algorithm, "sha256"))
-		sha256(str);
-	else {
-		printUsage();
-		exitError("Unkwown command.");
-	}
+	(void)ssl;
+	// if (strEqual(command, "md5"))
+	// 	md5(str);
+	// else if (strEqual(command, "sha256"))
+	// 	sha256(str);
+	// else {
+	// 	printUsage();
+	// 	exitError("Unkwown command.");
+	// }
 }
 
 SSL		*parseParams(int ac, string *av)
@@ -70,6 +71,6 @@ int	main(int ac, char **av)
 		printf("givenStr: %s\n", tmp->str);
 		tmp = tmp->next;
 	}
-	choseAlgorithm("test", ssl->command);
+	executeAlgorithm(ssl);
 	return (0);
 }
