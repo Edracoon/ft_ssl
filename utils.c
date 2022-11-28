@@ -39,7 +39,7 @@ void	*myAlloc(int size)
 int		strLen(string str)
 {
 	int i = 0;
-	while (str[i]) i++;
+	while (str && str[i]) i++;
 	return (i);
 }
 
@@ -64,12 +64,12 @@ char	*strJoin(string s1, string s2)
 	int j = 0;
 	int len = strLen(s1) + strLen(s2);
 	string str = myAlloc(sizeof(char) * (len + 1));
-	while (s1[i])
+	while (s1 && s1[i])
 	{
 		str[i] = s1[i];
 		i++;
 	}
-	while (s2[j])
+	while (s2 && s2[j])
 	{
 		str[i] = s2[j];
 		i++;
@@ -92,6 +92,57 @@ string	strDup(string str)
 	}
 	newStr[i] = '\0';
 	return (newStr);
+}
+
+SSL		*parseParams(int ac, string *av)
+{
+	SSL		*ssl = myAlloc(sizeof(SSL));
+	ssl->command = NULL;
+	ssl->content = NULL;
+	ssl->isThereFile = false;
+	ssl->p = false;
+	ssl->q = false;
+	ssl->r = false;
+	ssl->s = false;
+
+	int i = 1;
+	while (i < ac)
+	{
+		/* If a file has been inputed we stop looking after flags */
+		if (ssl->isThereFile) {
+			addBackContent(ssl, av[i], NULL, true);
+			i++;
+			continue;
+		}
+
+		/* Looking for flags */
+		if (strEqual(av[i], "-h"))
+			printUsage();
+		else if (strEqual(av[i], "-p"))
+			ssl->p = true;
+		else if (strEqual(av[i], "-q"))
+			ssl->q = true;
+		else if (strEqual(av[i], "-r"))
+			ssl->r = true;
+		else if (strEqual(av[i], "-s"))
+		{
+			i++;
+			addBackContent(ssl, strDup(av[i]), strDup(av[i]), false);
+			ssl->s = true;
+		}
+		else if (ssl->command == NULL)
+			ssl->command = strDup(av[i]);
+		else {
+			ssl->isThereFile = true;
+			addBackContent(ssl, strDup(av[i]), NULL, true);
+		}
+		i++;
+	}
+	if (ssl->command == NULL) {
+		printUsage();
+		exitError("Missing command.");
+	}
+	return ssl;
 }
 
 void	addBackContent(SSL	*ssl, string key, string value, bool isFile)

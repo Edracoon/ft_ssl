@@ -4,6 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+/* Open includes */
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #define RED "\e[0;31m"
 #define RESET "\e[0m"
@@ -44,9 +48,17 @@ string	md5(string	str);
 string	sha256(string str);
 
 /* --- Utils --- */
+SSL		*parseParams(int ac, string *av);
 void	printUsage(void);
 void	exitError(char *str);
 void	*myAlloc(int taille);
+
+/* --- Read and Files --- */
+void	readFromFile(SSL *ssl, ContentList *content);
+void	readFromStdin(SSL *ssl);
+int		openFile(SSL *ssl, char *fileName);
+
+/* --- Linked List --- */
 void	addBackContent(SSL	*ssl, string key, string value, bool isFile);
 void	addFrontContent(SSL *ssl, string key, string value, bool isFile);
 
