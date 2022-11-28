@@ -81,6 +81,8 @@ char	*strJoin(string s1, string s2)
 
 string	strDup(string str)
 {
+	if (!str)
+		return (NULL);
 	int i = 0;
 	string newStr = myAlloc(sizeof(char) * (strLen(str) + 1));
 	while (str[i])
@@ -92,18 +94,30 @@ string	strDup(string str)
 	return (newStr);
 }
 
-void	addGivenString(SSL *ssl, string str)
+void	addBackContent(SSL	*ssl, string key, string value, bool isFile)
 {
-	givenString *new = myAlloc(sizeof(givenString));
-	new->str = str;
-	new->next = NULL;
-	if (ssl->givenStr == NULL)
-		ssl->givenStr = new;
+	ContentList	*newContent = myAlloc(sizeof(ContentList));
+	newContent->key = key;
+	newContent->value = value;
+	newContent->isFile = isFile;
+	newContent->next = NULL;
+	if (ssl->content == NULL)
+		ssl->content = newContent;
 	else
 	{
-		givenString *tmp = ssl->givenStr;
+		ContentList	*tmp = ssl->content;
 		while (tmp->next)
 			tmp = tmp->next;
-		tmp->next = new;
+		tmp->next = newContent;
 	}
+}
+
+void addFrontContent(SSL *ssl, string key, string value, bool isFile)
+{
+	ContentList	*newContent = myAlloc(sizeof(ContentList));
+	newContent->key = key;
+	newContent->value = value;
+	newContent->isFile = isFile;
+	newContent->next = ssl->content;
+	ssl->content = newContent;
 }
