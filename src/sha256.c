@@ -1,4 +1,4 @@
-#include "../ft_ssl.h"
+#include "ft_ssl.h"
 
 string	sha256(string str)
 {

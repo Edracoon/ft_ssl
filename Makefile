@@ -2,7 +2,7 @@ NAME=ft_ssl
 
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
-SRCS = ${wildcard *.c} ${wildcard */*.c}
+SRCS = ${wildcard src/*.c} ${wildcard src/*/*.c}
 OBJS = $(SRCS:.c=.o)
 
 ${NAME}: ${OBJS}
