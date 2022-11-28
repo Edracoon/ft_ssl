@@ -5,10 +5,11 @@ void	executeCommand(SSL *ssl, string (*command)(string str))
 	ContentList	*tmp = ssl->content;
 	while (tmp)
 	{
+		printf("%s\n", tmp->key);
 		if (tmp->isFile)
 			readFromFile(ssl, tmp);
 
-		if (tmp->value) continue ;
+		if (!tmp->value) { tmp = tmp->next; continue; }
 
 		command(tmp->value);
 
