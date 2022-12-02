@@ -13,12 +13,14 @@ void	printStrHexa(unsigned char *str, unsigned int len)
 
 void	printHash(SSL *ssl, unsigned char *hash, char *key)
 {
-	if (ssl->q)
-		printStrHexa(hash, 16);
-	else if (ssl->r)
-		printf("%s \"%s\"", hash, key);
-	else
-		printf("(\"%s\") = %s", key, hash);
+	(void)ssl;
+	(void)key;
+	// if (ssl->q)
+	printStrHexa(hash, 16);
+	// else if (ssl->r)
+	// 	printf("%s \"%s\"", hash, key);
+	// else
+	// 	printf("(\"%s\") = %s", key, hash);
 	write(1, "\n", 1);
 }
 
