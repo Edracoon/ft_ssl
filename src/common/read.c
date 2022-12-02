@@ -2,9 +2,9 @@
 
 void	readFromFile(SSL *ssl, ContentList *content)
 {
-	string	buff = myAlloc(sizeof(char) * (1024 + 1));
-	string	str = NULL;
-	string	tmp;
+	char	*buff = myAlloc(sizeof(char) * (1024 + 1));
+	char	*str = NULL;
+	char	*tmp;
 
 	int	fd = openFile(ssl, content->key);
 	if (fd == -1)
@@ -25,9 +25,9 @@ void	readFromFile(SSL *ssl, ContentList *content)
 
 void	readFromStdin(SSL *ssl)
 {
-	string	buff = myAlloc(sizeof(char) * 1);
-	string	tempRead = myAlloc(sizeof(char) * 2);
-	string	tmp;
+	char	*buff = myAlloc(sizeof(char) * 1);
+	char	*tempRead = myAlloc(sizeof(char) * 2);
+	char	*tmp;
 	buff[0] = '\0';
 
 	char	c;

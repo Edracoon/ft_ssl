@@ -1,17 +1,40 @@
 #include "ft_ssl.h"
 
-void	executeCommand(SSL *ssl, string (*command)(string str))
+void	printStrHexa(unsigned char *str, unsigned int len)
+{
+	char			hexa[16] = "0123456789abcdef";
+
+	for (unsigned int i = 0 ; i < len ; i++)
+	{
+		write(1, &hexa[str[i] / 16], 1);
+		write(1, &hexa[str[i] % 16], 1);
+	}
+}
+
+void	printHash(SSL *ssl, unsigned char *hash, char *key)
+{
+	if (ssl->q)
+		printStrHexa(hash, 16);
+	else if (ssl->r)
+		printf("%s \"%s\"", hash, key);
+	else
+		printf("(\"%s\") = %s", key, hash);
+	write(1, "\n", 1);
+}
+
+void	executeCommand(SSL *ssl, unsigned char *(*command)(SSL *ssl, unsigned char *str))
 {
 	ContentList	*tmp = ssl->content;
 	while (tmp)
 	{
-		printf("%s\n", tmp->key);
+		printf("key=\"%s\", value\"%s\"\n", tmp->key, tmp->value);
 		if (tmp->isFile)
 			readFromFile(ssl, tmp);
 
 		if (!tmp->value) { tmp = tmp->next; continue; }
 
-		command(tmp->value);
+		unsigned char	*hash = command(ssl, (unsigned char*)tmp->value);
+		printHash(ssl, hash, tmp->key);
 
 		tmp = tmp->next;
 	}

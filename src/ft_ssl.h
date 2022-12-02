@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
+
 /* Open includes */
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -12,15 +14,14 @@
 #define RED "\e[0;31m"
 #define RESET "\e[0m"
 
-typedef	char*						string;
 typedef unsigned long long			ull;
 typedef enum e_bool { false, true } bool;
 
 typedef struct s_ContentList
 {
-	string					key;
-	string					value;
-	string					crypted;
+	char					*key;
+	char					*value;
+	char					*crypted;
 
 	bool					isFile;
 	bool					isGivenStr;
@@ -30,7 +31,7 @@ typedef struct s_ContentList
 
 typedef struct	s_SSL
 {
-	string		command;	/* md5, sha256, etc... */
+	char		*command;	/* md5, sha256, etc... */
 
 	ContentList	*content;	/* Content list to encrypt */
 
@@ -44,11 +45,11 @@ typedef struct	s_SSL
 
 } SSL;
 
-string	md5(string	str);
-string	sha256(string str);
+unsigned char	*md5(SSL *ssl, unsigned char *str);
+unsigned char	*sha256(SSL *ssl, unsigned char *str);
 
 /* --- Utils --- */
-SSL		*parseParams(int ac, string *av);
+SSL		*parseParams(int ac, char **av);
 void	printUsage(void);
 void	exitError(char *str);
 void	*myAlloc(int taille);
@@ -59,12 +60,12 @@ void	readFromStdin(SSL *ssl);
 int		openFile(SSL *ssl, char *fileName);
 
 /* --- Linked List --- */
-void	addBackContent(SSL	*ssl, string key, string value, bool isFile);
-void	addFrontContent(SSL *ssl, string key, string value, bool isFile);
+void	addBackContent(SSL	*ssl, char *key, char * value, bool isFile);
+void	addFrontContent(SSL *ssl, char * key, char * value, bool isFile);
 
 /* --- Strings --- */
 int		strLen(char *str);
 void	putStr(int fd, char *str);
-bool	strEqual(string s1, string s2);
+bool	strEqual(char *s1, char *s2);
 char	*strJoin(char *s1, char *s2);
-string	strDup(string str);
+char	*strDup(char *str);

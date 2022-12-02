@@ -1,6 +1,6 @@
 #include "../ft_ssl.h"
 
-void	exitError(string str)
+void	exitError(char *str)
 {
 	putStr(STDERR_FILENO, RED);
 	putStr(STDERR_FILENO, "Error: ft_ssl: ");
@@ -15,8 +15,8 @@ void	printUsage(void)
 	putStr(STDOUT_FILENO, "\
 Usage: \n\t ./ft_ssl <command> [flags] [file]\n\n \
 Commands:\n \
-	md5 ( \'Message Digest 5\' )\n \
-	sha256 ( \'Secure Hash Algorithms\' ) \n\n \
+	md5\t( \'Message Digest 5\' )\n \
+	sha256\t( \'Secure Hash Algorithms\' ) \n\n \
 Flags:\n \
 	-h: Print usage\n \
 	-p: Echo STDIN to STDOUT and append the checksum to STDOUT\n \
@@ -36,19 +36,19 @@ void	*myAlloc(int size)
 	return p;
 }
 
-int		strLen(string str)
+int		strLen(char *str)
 {
 	int i = 0;
 	while (str && str[i]) i++;
 	return (i);
 }
 
-void	putStr(int fd, string str)
+void	putStr(int fd, char *str)
 {
 	write(fd, str, strLen(str));
 }
 
-bool	strEqual(string s1, string s2)
+bool	strEqual(char *s1, char *s2)
 {
 	while (*s1 && *s2 && *s1 == *s2)
 	{
@@ -58,12 +58,12 @@ bool	strEqual(string s1, string s2)
 	return (*(unsigned char *)s1 - *(unsigned char *)s2 == 0 ? true : false);
 }
 
-char	*strJoin(string s1, string s2)
+char	*strJoin(char *s1, char *s2)
 {
 	int i = 0;
 	int j = 0;
 	int len = strLen(s1) + strLen(s2);
-	string str = myAlloc(sizeof(char) * (len + 1));
+	char *str = myAlloc(sizeof(char) * (len + 1));
 	while (s1 && s1[i])
 	{
 		str[i] = s1[i];
@@ -79,12 +79,12 @@ char	*strJoin(string s1, string s2)
 	return (str);
 }
 
-string	strDup(string str)
+char	*strDup(char *str)
 {
 	if (!str)
 		return (NULL);
-	int i = 0;
-	string newStr = myAlloc(sizeof(char) * (strLen(str) + 1));
+	int		i = 0;
+	char	*newStr = myAlloc(sizeof(char) * (strLen(str) + 1));
 	while (str[i])
 	{
 		newStr[i] = str[i];
@@ -94,7 +94,7 @@ string	strDup(string str)
 	return (newStr);
 }
 
-SSL		*parseParams(int ac, string *av)
+SSL		*parseParams(int ac, char **av)
 {
 	SSL		*ssl = myAlloc(sizeof(SSL));
 	ssl->command = NULL;
@@ -145,7 +145,7 @@ SSL		*parseParams(int ac, string *av)
 	return ssl;
 }
 
-void	addBackContent(SSL	*ssl, string key, string value, bool isFile)
+void	addBackContent(SSL	*ssl, char *key, char *value, bool isFile)
 {
 	ContentList	*newContent = myAlloc(sizeof(ContentList));
 	newContent->key = key;
@@ -163,7 +163,7 @@ void	addBackContent(SSL	*ssl, string key, string value, bool isFile)
 	}
 }
 
-void addFrontContent(SSL *ssl, string key, string value, bool isFile)
+void addFrontContent(SSL *ssl, char *key, char *value, bool isFile)
 {
 	ContentList	*newContent = myAlloc(sizeof(ContentList));
 	newContent->key = key;
