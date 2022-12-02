@@ -211,10 +211,10 @@ unsigned char	*md5(SSL *ssl, unsigned char *str)
 		 * into 4 chars using bit shifting
 		 * See: https://stackoverflow.com/questions/121059/conversion-from-32-bit-integer-to-4-chars
 		 */
-		digest[i * 4 + 0] = (unsigned char)((n & 0x000000FF));
-        digest[i * 4 + 1] = (unsigned char)((n & 0x0000FF00) >> 8);
-        digest[i * 4 + 2] = (unsigned char)((n & 0x00FF0000) >> 16);
-        digest[i * 4 + 3] = (unsigned char)((n & 0xFF000000) >> 24);
+		digest[i * 4 + 0] = (unsigned char)((n & 0xff));
+        digest[i * 4 + 1] = (unsigned char)((n >> 8) & 0xff);
+        digest[i * 4 + 2] = (unsigned char)((n >> 16 )& 0xff);
+        digest[i * 4 + 3] = (unsigned char)((n >> 24) & 0xff);
 	}
 
 	return digest;
