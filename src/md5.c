@@ -103,6 +103,7 @@ unsigned char	*applyPadding(unsigned char *str, unsigned int *totalLength)
 
 	for (unsigned int i = 0; i < 8; i++)
 		paddedStr[newLength - 8 + i] = (modBitLength >> (i * 8)) & 0xff;
+
 	printf("newLength -> %d, modOriginalBitLength -> %d\n", newLength, modBitLength);
 
 	*totalLength = newLength;
