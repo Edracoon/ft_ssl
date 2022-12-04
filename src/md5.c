@@ -98,11 +98,11 @@ unsigned char	*applyPadding(unsigned char *str, unsigned int *totalLength)
 	*/
 	unsigned int	modBitLength = (originalLength * 8); // % (unsigned long long)pow(2, 64); // -> This is useless since our message is always be less than 2^64
 	/* To append the length: uint_32 is 4 chars https://stackoverflow.com/questions/121059/conversion-from-32-bit-integer-to-4-chars */
-	for (unsigned int i = 0; i < 4; i++)
-		paddedStr[newLength - i] = (modBitLength >> (i * 8)) & 0xff;
-
 	// for (unsigned int i = 0; i < 8; i++)
-	// 	paddedStr[newLength - 8 + i] = (modBitLength >> (i * 8)) & 0xff;
+	// 	paddedStr[newLength - i] = (modBitLength >> (i * 8)) & 0xff;
+
+	for (unsigned int i = 0; i < 8; i++)
+		paddedStr[newLength - 8 + i] = (modBitLength >> (i * 8)) & 0xff;
 	printf("newLength -> %d, modOriginalBitLength -> %d\n", newLength, modBitLength);
 
 	*totalLength = newLength;
@@ -149,7 +149,10 @@ unsigned char	*md5(SSL *ssl, unsigned char *str)
 		/* We want to concatenate 4 chars into M[j] */
 		/* see https://stackoverflow.com/questions/57155608/how-can-i-concatenate-multiple-chars-into-an-int */
 		for (unsigned int j = 0; j < 16; j++)
-			M[j] = str[j * 4 + chunk + 0] | (str[j * 4 + chunk + 1] << 8) | (str[j * 4 + chunk + 2] << 16) | (str[j * 4 + chunk + 3] << 24);
+			M[j] = (str[j * 4 + chunk + 0]) |
+				   (str[j * 4 + chunk + 1] << 8) |
+				   (str[j * 4 + chunk + 2] << 16) |
+				   (str[j * 4 + chunk + 3] << 24);
 
 		/* Main loop */
 		for (unsigned int j = 0; j < 64; j++)
